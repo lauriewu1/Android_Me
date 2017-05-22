@@ -16,6 +16,7 @@
 
 package com.example.android.android_me.ui;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -31,6 +32,7 @@ public class AndroidMeActivity extends AppCompatActivity {
         // In this class, you'll need to implement an empty constructor and the onCreateView method
         // TODO (3) Show the first image in the list of head images
             // Soon, you'll update this image display code to show any image you want
+            // then do to do 4 because every fragment needs a host activity
 
 
 
@@ -40,5 +42,16 @@ public class AndroidMeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_android_me);
 
         // TODO (5) Create a new BodyPartFragment instance and display it using the FragmentManager
+        BodyPartFragment headFragment = new BodyPartFragment();
+
+        // use FragmentManager and transaction to add the fragment to the screen
+        // the FragmentManager is responsible for starting and completing fragment transaction
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        //this transaction adds the fragment to the specified container
+        fragmentManager.beginTransaction()//beginTransaction starts a new fragment transaction
+                .add(R.id.head_container,headFragment)//adds a fragment and embeds it with host activity
+                //replace will replace a fragment with it's associated container
+                .commit();//completes the transaction after all fragment actions
     }
 }
