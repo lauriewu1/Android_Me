@@ -14,7 +14,7 @@ import com.example.android.android_me.data.AndroidImageAssets;
  * Created by Laurie on 5/21/2017.
  */
 //this extension is how android knows to treat this class's
-// lifecycle event and creations as fragment
+//lifecycle event and creations as fragment
 public class BodyPartFragment extends Fragment {
 
     //mandatory empty constructor for instantiating the fragment
