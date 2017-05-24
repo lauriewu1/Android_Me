@@ -26,11 +26,15 @@ import android.widget.ImageView;
 
 import com.example.android.android_me.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BodyPartFragment extends Fragment {
 
-    // TODO (3) Create final Strings to store state information about the list of images and list index
+    //final strings to store state information about the list of images and list index
+    //static means it will remain as long as the app runs
+    public static final String IMAGE_ID_LIST = "image_ids";
+    public static final String LIST_INDEX = "list_index";
 
     // Tag for logging
     private static final String TAG = "BodyPartFragment";
@@ -51,11 +55,18 @@ public class BodyPartFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        //load the saved state if there's one
+        if(savedInstanceState != null){
+            mImageIds = savedInstanceState.getIntegerArrayList(IMAGE_ID_LIST);
+            mListIndex = savedInstanceState.getInt(LIST_INDEX);
+        }
+
         // Inflate the Android-Me fragment layout
         View rootView = inflater.inflate(R.layout.fragment_body_part, container, false);
 
         // Get a reference to the ImageView in the fragment layout
-        ImageView imageView = (ImageView) rootView.findViewById(R.id.body_part_image_view);
+        //is declared final so this variable can't be changed to a new value
+        final ImageView imageView = (ImageView) rootView.findViewById(R.id.body_part_image_view);
 
         // If a list of image ids exists, set the image resource to the correct item in that list
         // Otherwise, create a Log statement that indicates that the list was not found
@@ -63,9 +74,22 @@ public class BodyPartFragment extends Fragment {
             // Set the image resource to the list item at the stored index
             imageView.setImageResource(mImageIds.get(mListIndex));
 
-            // TODO (1) Set a click listener on the image view and on a click increment the list index and set the image resource
-            // TODO (2) If you reach the end of a list of images, set the list index back to 0 (the first item in the list)
+            // Set a click listener on the image view and on a click increment the list index and set the image resource
+            // If you reach the end of a list of images, set the list index back to 0 (the first item in the list)
 
+            //set a click listener on the image view
+            imageView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    //increment index as long as the index remains <= the size of the image ids list
+                    if(mListIndex < mImageIds.size()-1)
+                        mListIndex++;
+                    else
+                        mListIndex = 0;
+                    //set image resource to the new list item
+                    imageView.setImageResource(mImageIds.get(mListIndex));
+                }
+            });
         } else {
             Log.v(TAG, "This fragment has a null list of image id's");
         }
@@ -76,7 +100,6 @@ public class BodyPartFragment extends Fragment {
 
     // Setter methods for keeping track of the list images this fragment can display and which image
     // in the list is currently being displayed
-
     public void setImageIds(List<Integer> imageIds) {
         mImageIds = imageIds;
     }
@@ -85,5 +108,14 @@ public class BodyPartFragment extends Fragment {
         mListIndex = index;
     }
 
-    // TODO (4) Override onSaveInstanceState and save the current state of this fragment
+    //save the current state of this fragment(so when screen rotates it doesn't reset the states
+    // by saving current state in a bundle(sets of key value pair),
+    // have the bundle include the image list and current index
+    @Override
+    public void onSaveInstanceState(Bundle currentState){
+        //attach current image id list to the var IMAGE_ID_LIST, attach current index
+        //to the var LIST_INDEX doing so stores the list and the index
+        currentState.putIntegerArrayList(IMAGE_ID_LIST, (ArrayList<Integer>) mImageIds);
+        currentState.putInt(LIST_INDEX,mListIndex);
+    }
 }
