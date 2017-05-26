@@ -3,7 +3,7 @@
     android:id="@+id/images_grid_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:adjustViewBoudns="true"
+    android:adjustViewBounds="true"
     android:columnWidth="180dp"
     android:gravity="center"
     android:horizontalSpacing="8dp"
